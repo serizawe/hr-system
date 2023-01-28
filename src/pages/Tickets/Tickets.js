@@ -9,19 +9,19 @@ const Tickets = () => {
       id:1,
       name:'Ozan',
       surname:'Ünsal',
-      title:'Problem',
+      title:'Test Problem',
     },
     {
       id:2,
       name:'Murat',
       surname:'Akbıyık',
-      title:'Problem',
+      title:'Password Problem',
     },
       {
       id:3,
       name:'Göknil',
       surname:'Kömürcü',
-      title:'Problem',
+      title:'Feedback',
     },
     {
       id:4,
@@ -41,11 +41,7 @@ const Tickets = () => {
   <div className='flex  justify-between  gap-24 w-[1024px]'>
     <div className='h-[85vh]  transition-all ease-in-out overflow-y-scroll border-black rounded-lg shadow-2xl shadow-black w-[1000px] p-10'>
       <div className='relative'>
-        <AiOutlineSearch className='absolute left-2 top-5' size={25}/>
-            <input
-              className="mb-3 pl-10 w-full border-2 border-gray-500 rounded-xl p-4 mt-1 bg-transparent"
-              placeholder="Search a candidate"
-            />
+        
       {tickets.map(ticket=>(
         <NavLink
         className='flex flex-col w-full rounded-2xl border-2 border-gray-500  p-5 mt-5'

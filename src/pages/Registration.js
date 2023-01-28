@@ -42,13 +42,7 @@ const Registration = () => {
               type={"password"}
             />
           </div> 
-          <div className="flex flex-col mt-4">
-            <label className="text-lg font-medium text-slate-900">Applied Job</label>
-            <input
-              className="w-full h-1/2 border-2 border-gray-600 rounded-xl p-3 mt-1 bg-transparent"
-              placeholder="Applied job"
-            />
-          </div>
+          
           <div className="mt-8 flex flex-col items-end gap-y-6">
             <button className=" w-32 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.03]  ease-in-out py-4 bg-gray-800 rounded-xl text-white font-bold text-lg">
               Create
