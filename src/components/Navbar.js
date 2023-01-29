@@ -9,14 +9,32 @@ import {
 import {RiMenuFoldLine,RiMenuUnfoldLine} from 'react-icons/ri'
 import {BiUserCircle} from 'react-icons/bi'
 
+
+
+
 const Navbar = () => {
 const [Menu,setMenu] = React.useState(false)
-  return (
+
+
+
+
+const LogOut = () => {
+  localStorage.setItem('role','role');
+  localStorage.removeItem('token');
+  
+};
+
+
+  
+  
+
+  while(localStorage.getItem('role')){if (localStorage.getItem('role') === 'HR' )  return (
 
     <div className="flex w-full mr-3">
-      <div className="fixed flex items-center text-white border-gray-400 top-0 left-0 w-full h-14 bg-[#001440]" >
+      <div className="fixed flex items-center  text-white border-gray-400 top-0 left-0 w-full h-14 bg-[#001440]" >
         &nbsp; &nbsp; &nbsp; vinna
-        <BiUserCircle className="absolute  top-4 right-10  cursor-pointer" size={30} color={'white'} />
+        <span onClick={LogOut} className="block hover:cursor-pointer absolute pt-2 pl-8 right-28">log out </span>
+        <BiUserCircle  className="absolute mr-2 top-4 right-40  cursor-pointer" size={30} color={'white'} />
       </div>
       <div className="fixed top-16 left-3" onClick={()=> setMenu(!Menu)}>
         <RiMenuUnfoldLine className="cursor-pointer" size={30}/>
@@ -32,18 +50,57 @@ const [Menu,setMenu] = React.useState(false)
             <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out" to={"/Registration"}>Register a candidate</NavLink>
           </li>
           <li className="">
-            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out" to={"/Interview"}>Interviews</NavLink>
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out" to={"/CreateInterview"}>Interviews</NavLink>
           </li>
           <li className="">
             <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out"to={"/Tickets"}>Tickets</NavLink>
           </li>
           <li className="">
-            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out"to={"/Quiz"}>Tests</NavLink>
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out"to={"/CreateQuiz"}>Tests</NavLink>
            </li>              
         </ul>
       </div>
 
    </div>
   );
-} 
+  
+  else  return  (
+
+    <div className="flex w-full mr-3">
+      <div className="fixed flex items-center  text-white border-gray-400 top-0 left-0 w-full h-14 bg-[#001440]" >
+        &nbsp; &nbsp; &nbsp; vinna
+        <span onClick={LogOut} className="block hover:cursor-pointer absolute pt-2 pl-8 right-28">log out </span>
+        <BiUserCircle className="absolute mr-2 top-4 right-40  cursor-pointer" size={30} color={'white'} />
+      </div>
+      <div className="fixed top-16 left-3" onClick={()=> setMenu(!Menu)}>
+        <RiMenuUnfoldLine className="cursor-pointer" size={30}/>
+      </div>
+      
+      <div className={Menu ? "fixed top-14 left-0 border-t-2 border-gray-400 w-[220px] h-[98vh] bg-[#001440] text-white shadow-2xl shadow-black z-10 duration-200" : "fixed top-0 left-[-100%] w-[240px] h-screen bg-white z-10 duration-200"}>
+        <RiMenuFoldLine className="absolute right-2 top-1 cursor-pointer" onClick={() => setMenu(!Menu)} size={30}/>
+        <ul className="flex flex-col justify-around gap-20 mt-20">
+          <li className="  ">
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out" to={"/MyApplication"}>My Application</NavLink>
+          </li>
+          
+          <li className="">
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out" to={"/Interview"}>Interviews</NavLink>
+          </li>
+          <li className="">
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out"to={"/Tickets"}>Tickets</NavLink>
+          </li>
+          <li className="">
+            <NavLink className="inline-block ml-5  text-xl border-b-2 border-white hover:text-green-700 transition-all ease-in-out"to={"/SolveQuiz"}>Tests</NavLink>
+           </li>              
+        </ul>
+      </div>
+
+   </div>
+  );}
+  
+
+    
+
+  }
+ 
 export default Navbar

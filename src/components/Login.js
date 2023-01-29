@@ -1,8 +1,76 @@
 import * as React from "react";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-export default function Login() {
+  const Login = () => {
+
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+ 
+  
+
+    
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [emailError, setEmailError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [loginError, setLoginError] = React.useState(null);
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/api/login', { email, password });
+      const token = response?.data?.token;
+            const roles = response?.data?.roles;
+            setAuth({ email, password, roles, token });
+            setEmail('');
+            setPassword('');
+            navigate(from, { replace: true });
+      
+      // store the token in local storage or a cookie
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', roles);
+      // navigate to the protected page or do whatever you want with the token
+    } catch (error) {
+      setLoginError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEmailChange = event => {
+    const email = event.target.value;
+    setEmail(email);
+    if (email.indexOf("@") === -1 || !emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      setEmailError("");
+    }
+  }
+
+  const handlePasswordChange = event => {
+    const password = event.target.value;
+    setPassword(password);
+    if (password.length < 8 || password.length > 24) {
+      setPasswordError("Password must be between 8 and 24 characters.");
+    } else {
+      setPasswordError("");
+    }
+  }
+
   return (
-    <div className="w-11/12 max-w-[700px] px-10 py-20 rounded-2xl bg-white border-2 border-gray-300 shadow-2xl">
+  <div className="flex w-full mt-20 justify-center items-center">
+    <div className="w-8/12 px-10 py-20 h-[85vh] rounded-2xl bg-white border-2 border-gray-300 shadow-2xl">
    
       <h1 className="text-6xl text-violet-500 font-bold">Log in</h1>
       <p className="font-medium text-lg text-gray-500 mt-4">
@@ -14,7 +82,10 @@ export default function Login() {
           <input
             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             placeholder="Enter your email"
+            value={email}
+            onChange={handleEmailChange}
           />
+          {emailError && <p className="text-red-500">{emailError}</p>}
         </div>
         <div className="flex flex-col mt-4 text-violet-500">
           <label className="text-lg font-medium">Password</label>
@@ -22,52 +93,26 @@ export default function Login() {
             className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             placeholder="Enter your password"
             type={"password"}
+            value={password}
+            onChange={handlePasswordChange}
           />
-        </div>
-        <div className="mt-8 flex justify-between items-center">
-          <div>
-            <input type="checkbox" id="remember" />
-            <label className="ml-2 font-medium text-base text-violet-500 " for="remember">
-              Remember me
-            </label>
+          {passwordError && <p className="text-red-500">{passwordError}</p>}
           </div>
-          <button className="font-medium text-base text-violet-500 hover:scale-110 ease-in-out transform">
-            Forgot password
+          <div className="mt-8 flex justify-between items-center">
+            
+            <button className="font-medium text-base text-violet-500 hover:scale-110 ease-in-out transform">
+              Forgot password
+            </button>
+          </div>
+          <div className="mt-8 flex flex-col gap-y-6">
+          <button className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.03]  ease-in-out transform py-4 bg-zinc-600 rounded-xl text-white font-bold text-lg" onClick={handleSubmit}>
+           Sign in
           </button>
-        </div>
-        <div className="mt-8 flex flex-col gap-y-6">
-          <button className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.03]  ease-in-out transform py-4 bg-zinc-600 rounded-xl text-white font-bold text-lg">
-            Sign in
-          </button>
-          <button className="flex items-center justify-center gap-2 active:scale-[.95] active:duration-75 transition-all hover:scale-[1.03]  ease-in-out transform py-4  rounded-xl bg-zinc-600 text-white font-semibold text-lg border-2 border-gray-100 ">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M5.26644 9.76453C6.19903 6.93863 8.85469 4.90909 12.0002 4.90909C13.6912 4.90909 15.2184 5.50909 16.4184 6.49091L19.9093 3C17.7821 1.14545 15.0548 0 12.0002 0C7.27031 0 3.19799 2.6983 1.24023 6.65002L5.26644 9.76453Z"
-                fill="#EA4335"
-              />
-              <path
-                d="M16.0406 18.0142C14.9508 18.718 13.5659 19.0926 11.9998 19.0926C8.86633 19.0926 6.21896 17.0785 5.27682 14.2695L1.2373 17.3366C3.19263 21.2953 7.26484 24.0017 11.9998 24.0017C14.9327 24.0017 17.7352 22.959 19.834 21.0012L16.0406 18.0142Z"
-                fill="#34A853"
-              />
-              <path
-                d="M19.8342 20.9978C22.0292 18.9503 23.4545 15.9019 23.4545 11.9982C23.4545 11.2891 23.3455 10.5255 23.1818 9.81641H12V14.4528H18.4364C18.1188 16.0119 17.2663 17.2194 16.0407 18.0108L19.8342 20.9978Z"
-                fill="#4A90E2"
-              />
-              <path
-                d="M5.27698 14.2663C5.03833 13.5547 4.90909 12.7922 4.90909 11.9984C4.90909 11.2167 5.03444 10.4652 5.2662 9.76294L1.23999 6.64844C0.436587 8.25884 0 10.0738 0 11.9984C0 13.918 0.444781 15.7286 1.23746 17.3334L5.27698 14.2663Z"
-                fill="#FBBC05"
-              />
-            </svg>
-            Sign in with Google
-          </button>
+          {isLoading && <p>Loading...</p>}
+          {loginError && <p className="text-red-500">{loginError}</p>}
         </div>
       </div>
     </div>
+  </div>
   );
-}
+}; export default Login

@@ -15,11 +15,13 @@ import QuizComponent from "./components/SolveQuiz";
 import TicketDetail from "./pages/Ticket/TicketDetail";
 import TicketList from "./pages/Ticket/TicketList";
 import TicketForm from "./pages/Ticket/TicketForm";
-import ApplicationDetailss from "./components/ApplicationDetails";
 import MyApplication from "./pages/Application/ApplicantView";
 import ApplicationsList from "./pages/Application/ApplicationList";
 import ApplicationDetails from "./pages/Application/ApplicationDetails";
-
+import RequireAuth from './components/RequireAuth';
+import Unauthorized from "./components/Unauthorized";
+import Password from "./components/Password";
+import Forgot from "./components/Forgot";
 
 
 
@@ -225,26 +227,61 @@ const applications = [
 
   return (
     <div className=" w-full h-screen bg-white">
-      <div className=" w-1/6">
-        <Navbar/>
+      
+      <div className=" w-full">
+         <Navbar/>
       </div>
+      
       <div className="flex mt-20 pl-60 w-11/12 h-3/4">
         <Routes>
-        <Route  path="/" element={<Applications/>}>
-           <Route  path="Details/:id" element={<Details/>} />
-        </Route>
-        <Route path="/create-ticket" element={<TicketForm/>} />
-        <Route path="/Tickets" element={<TicketList tickets={testTickets} />} >
-          <Route path=":id" element={<TicketDetail tickets={testTickets} />} />
-        </Route>
-        <Route path="/Registration" element={<Registration/>} />
+          
+          <Route path="/Register" element={<Register/>} />
+          <Route path="/Login" element={<Login/>} />
+          <Route path="/unauthorized" element={<Unauthorized />} /> 
+          <Route element={<RequireAuth />}>
+            <Route path="/Registration" element={<Registration/>} />
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route path="/MyApplication" element={<MyApplication/>} />
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route  path="/" element={<ApplicationsList/>}>
+              <Route  path=":id" element={<ApplicationDetails/>} />
+            </Route>
+          </Route>
 
-        <Route path="/Interview" element={<CreateInterview/>} />
-        <Route path="/Quiz" element={<Quiz/>} />
-        <Route path="/QuizSolve" quiz={quiz} element={<QuizComponent/>} />
-        <Route  path="/ApplicationDetails" element={<ApplicationDetails  application={testData[0]} />}></Route> 
-        <Route  path="/ApplicationList" element={<ApplicationsList  applications={testData}  />}></Route> 
-        
+          <Route element={<RequireAuth />}>
+            <Route path="/Password" element={<Password/>} />
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route path="/ForgotPassword" element={<Forgot/>} />
+          </Route>
+
+          <Route element={<RequireAuth />}>
+            <Route path="/CreateTicket" element={<TicketForm/>} />
+          </Route>
+          
+
+          <Route element={<RequireAuth />}>
+            <Route path="/Tickets" element={<TicketList tickets={testTickets} />} >
+              <Route path=":id" element={<TicketDetail tickets={testTickets} />} />
+            </Route>
+          </Route>
+
+            
+            
+          <Route element={<RequireAuth />}>
+            <Route path="/CreateInterview" element={<CreateInterview/>} />
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route path="/CreateQuiz" element={<Quiz/>} />
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route path="/SolveQuiz" element={<QuizComponent/>} />
+          </Route>
+            
+           
+          
         </Routes>
       </div>
 
