@@ -74,13 +74,11 @@ const QuizComponent = () => {
   };
 
   const handleFinish = () => {
-    // replace with actual url of your backend
     localStorage.setItem("answers", answers )
     /* 
     axios
-      .post("http://your-backend-url/quiz", { answers: answers })
+      .post("http://api/quiz", { answers: answers })
       .then(response => {
-        // handle response if needed
         console.log(response);
       }); */
   };
