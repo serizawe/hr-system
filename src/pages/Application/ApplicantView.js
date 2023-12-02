@@ -14,7 +14,7 @@ const [feedback, setFeedback] = useState("");
 
 
 useEffect(() => {
-    // use axios to fetch the application details from the back-end
+    // fetch the application details from the back-end
     axios.get(`/api/applications/${id}`)
         .then(res => {
             setApplication(res.data);
@@ -40,7 +40,7 @@ const handleInterviewChange = (e) => {
 // function to handle the new interview date and time submit
 const handleInterviewSubmit = (e) => {
     e.preventDefault();
-    // send a PUT request to the back-end to update the interview date and time
+    // PUT request to the back-end to update the interview date and time
     axios.put(`/api/applications/${id}`, { interview: newInterview })
         .then(res => {
             setApplication(res.data);
