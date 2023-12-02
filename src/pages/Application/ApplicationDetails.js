@@ -18,7 +18,7 @@ const ApplicationDetails = ({ id }) => {
     const [showFeedback, setShowFeedback] = useState(false);
 
     useEffect(() => {
-        // use axios to fetch the application details from the back-end
+        // fetch the application details from the back-end
         axios.get(`/api/applications/${id}`)
             .then(res => {
                 setApplication(res.data);
@@ -27,7 +27,7 @@ const ApplicationDetails = ({ id }) => {
                 console.error(err);
             });
 
-        // use axios to fetch all quizzes from the back-end
+        // fetch all quizzes from the back-end
         axios.get(`/api/quizzes`)
             .then(res => {
                 setQuizzes(res.data);
@@ -39,7 +39,7 @@ const ApplicationDetails = ({ id }) => {
 
     // function to handle the change status button click
     const handleChangeStatusClick = () => {
-        // send a PUT request to the back-end to update the application status
+        // PUT request to the back-end to update the application status
         axios.put(`/api/applications/${id}`, { status: newStatus })
             .then(res => {
                 setApplication(res.data);
@@ -81,7 +81,7 @@ const ApplicationDetails = ({ id }) => {
 
     const handleFeedbackSubmit = (e) => {
     e.preventDefault();
-    // send a PUT request to the back-end to update the feedback
+    // PUT request to the back-end to update the feedback
     axios.put(`/api/applications/${id}`, { feedback: feedback })
         .then(res => {
             setApplication(res.data);
